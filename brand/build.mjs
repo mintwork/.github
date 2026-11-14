@@ -36,14 +36,16 @@ await shot(files['logo/mintwork-mark.svg'], 'logo/mintwork-mark-512.png', 512);
 await shot(files['logo/mintwork-mark-mint.svg'], 'logo/mintwork-mark-mint-512.png', 512);
 for (const s of [16, 32, 48, 180, 192, 512]) await shot(files['favicon/favicon.svg'], `favicon/favicon-${s}.png`, s);
 
-// Lockups: mark + wordmark, rendered at 2x for READMEs and social cards.
+// Lockups: mark + wordmark on a transparent background, tightly cropped, at 2x for retina READMEs.
+const lp = await b.newPage({ deviceScaleFactor: 2, viewport: { width: 1200, height: 400 } });
 const lockup = async (out, dark) => {
-  await p.setViewportSize({ width: 1200, height: 360 });
-  const fg = dark ? '#E8F7F0' : INK, bg = dark ? INK : PAPER;
-  await p.setContent(`<html><body style="margin:0;background:${bg};width:1200px;height:360px;display:flex;align-items:center;justify-content:center;gap:26px">
-    <div style="width:132px;height:132px;margin-right:-6px">${(dark ? files['logo/mintwork-mark-mint.svg'] : files['logo/mintwork-mark.svg']).replace('viewBox="0 0 512 512"', 'viewBox="104 104 304 304"').replace('<svg ', '<svg width="132" height="132" ')}</div>
-    <div style="font:680 128px 'SF Pro Display',Inter,system-ui;letter-spacing:-0.045em;color:${fg};line-height:1;padding-bottom:10px">mintwork</div></body></html>`);
-  await p.screenshot({ path: out });
+  const fg = dark ? '#E8F7F0' : INK;
+  const mark = (dark ? files['logo/mintwork-mark-mint.svg'] : files['logo/mintwork-mark.svg'])
+    .replace('viewBox="0 0 512 512"', 'viewBox="104 104 304 304"').replace('<svg ', '<svg width="132" height="132" ');
+  await lp.setContent(`<html><body style="margin:0;background:transparent"><div id="l" style="display:inline-flex;align-items:center;gap:20px;padding:4px 6px">
+    <div style="width:132px;height:132px">${mark}</div>
+    <div style="font:680 128px 'SF Pro Display',Inter,system-ui;letter-spacing:-0.045em;color:${fg};line-height:1;padding-bottom:12px">mintwork</div></div></body></html>`);
+  await lp.locator('#l').screenshot({ path: out, omitBackground: true });
 };
 await lockup('lockup/mintwork-lockup-light.png', false);
 await lockup('lockup/mintwork-lockup-dark.png', true);
