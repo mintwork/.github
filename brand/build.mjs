@@ -1,25 +1,28 @@
-// mintwork brand assets. Mark: a leaf built from two 290-radius arcs on the 45° diagonal,
-// with a negative-space midrib running from the stem two-thirds of the way to the tip.
+// mintwork brand assets — mark "1a": a leaf from two 260-radius arcs on the 45° diagonal, with a
+// negative-space vein that tapers from the stem (26u wide) to a fine point (4u) two-thirds along.
+// This file is the single source of truth: edit the geometry here and re-run `node build.mjs`.
 import { chromium } from '/Users/ranjan/Workspace/personal/tokenscope/node_modules/playwright-core/index.mjs';
 import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 
-const MINT = '#7EE2B8', INK = '#0D1714', PAPER = '#F4FBF8';
-const LEAF = 'M111 401 A290 290 0 0 1 401 111 A290 290 0 0 1 111 401 Z';
-// midrib: 20u in the full mark; 34u in the favicon so it survives 16px
-const rib = (w) => `M${w > 24 ? 166 : 156} ${w > 24 ? 346 : 356} L${w > 24 ? 290 : 301} ${w > 24 ? 222 : 211}`;
-const markOnly = (fill, w = 20) =>
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><mask id="m"><rect width="512" height="512" fill="#fff"/><path d="${rib(w)}" stroke="#000" stroke-width="${w}" stroke-linecap="round"/></mask></defs><path d="${LEAF}" fill="${fill}" mask="url(#m)"/></svg>`;
-const tile = (fg, bg, w = 20, rx = 0) =>
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="${rx}" fill="${bg}"/><path d="${LEAF}" fill="${fg}"/><path d="${rib(w)}" stroke="${bg}" stroke-width="${w}" stroke-linecap="round"/></svg>`;
+const MINT = '#7EE2B8', INK = '#0D1714', LIGHT = '#E8F7F0';
+const LEAF = 'M126 386 A260 260 0 0 1 386 126 A260 260 0 0 1 126 386 Z';
+const k = Math.SQRT1_2;
+const wedge = (x0, y0, x1, y1, a, b) => `M${x0 + a * k} ${y0 + a * k} L${x1 + b * k} ${y1 + b * k} A${b} ${b} 0 0 0 ${x1 - b * k} ${y1 - b * k} L${x0 - a * k} ${y0 - a * k} Z`;
+const VEIN = wedge(126, 386, 300, 212, 13, 2);
+
+// mark on a solid field (square; GitHub/npm round the corners themselves)
+const tile = (fg, bg) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" fill="${bg}"/><path d="${LEAF}" fill="${fg}"/><path d="${VEIN}" fill="${bg}"/></svg>`;
+// mark alone on transparency, cropped to the leaf
+const mark = (fg) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="104 104 304 304"><defs><mask id="v"><rect x="0" y="0" width="512" height="512" fill="#000"/><path d="${LEAF}" fill="#fff"/><path d="${VEIN}" fill="#000"/></mask></defs><rect x="0" y="0" width="512" height="512" fill="${fg}" mask="url(#v)"/></svg>`;
 
 const files = {
-  'logo/mintwork-mark.svg': markOnly(INK),            // transparent, ink — for light backgrounds
-  'logo/mintwork-mark-mint.svg': markOnly(MINT),      // transparent, mint — for dark backgrounds
-  'logo/mintwork-mark-white.svg': markOnly('#FFFFFF'),
-  'avatar/mintwork-avatar.svg': tile(INK, MINT),       // square; GitHub/npm round the corners
+  'logo/mintwork-mark.svg': mark(INK),
+  'logo/mintwork-mark-mint.svg': mark(MINT),
+  'logo/mintwork-mark-white.svg': mark('#FFFFFF'),
+  'avatar/mintwork-avatar.svg': tile(INK, MINT),
   'avatar/mintwork-avatar-dark.svg': tile(MINT, INK),
-  'favicon/favicon.svg': tile(INK, MINT, 34, 112),
+  'favicon/favicon.svg': tile(INK, MINT),
 };
 for (const [f, s] of Object.entries(files)) fs.writeFileSync(f, s);
 
@@ -36,18 +39,22 @@ await shot(files['logo/mintwork-mark.svg'], 'logo/mintwork-mark-512.png', 512);
 await shot(files['logo/mintwork-mark-mint.svg'], 'logo/mintwork-mark-mint-512.png', 512);
 for (const s of [16, 32, 48, 180, 192, 512]) await shot(files['favicon/favicon.svg'], `favicon/favicon-${s}.png`, s);
 
-// Lockups: mark + wordmark on a transparent background, tightly cropped, at 2x for retina READMEs.
+// Lockups: transparent, tightly cropped, 2x. "leafdot" replaces the dot of the i with the mark.
 const lp = await b.newPage({ deviceScaleFactor: 2, viewport: { width: 1200, height: 400 } });
-const lockup = async (out, dark) => {
-  const fg = dark ? '#E8F7F0' : INK;
-  const mark = (dark ? files['logo/mintwork-mark-mint.svg'] : files['logo/mintwork-mark.svg'])
-    .replace('viewBox="0 0 512 512"', 'viewBox="104 104 304 304"').replace('<svg ', '<svg width="132" height="132" ');
-  await lp.setContent(`<html><body style="margin:0;background:transparent"><div id="l" style="display:inline-flex;align-items:center;gap:20px;padding:4px 6px">
-    <div style="width:132px;height:132px">${mark}</div>
-    <div style="font:680 128px 'SF Pro Display',Inter,system-ui;letter-spacing:-0.045em;color:${fg};line-height:1;padding-bottom:12px">mintwork</div></div></body></html>`);
+const lockup = async (out, dark, leafdot) => {
+  const fg = dark ? LIGHT : INK, m = dark ? mark(MINT) : mark(INK);
+  const svgAt = (s, w) => s.replace('<svg ', `<svg width="${w}" height="${w}" `);
+  const word = leafdot
+    ? `m<span style="position:relative">ı<span style="position:absolute;left:3px;top:-6px;width:40px;height:40px">${svgAt(dark ? mark(MINT) : mark(INK), 40)}</span></span>ntwork`
+    : 'mintwork';
+  await lp.setContent(`<html><body style="margin:0;background:transparent"><div id="l" style="display:inline-flex;align-items:center;gap:22px;padding:14px 8px 6px">
+    <div style="width:132px;height:132px">${svgAt(m, 132)}</div>
+    <div style="font:680 128px 'SF Pro Display',Inter,system-ui;letter-spacing:-0.045em;color:${fg};line-height:1;padding-bottom:12px">${word}</div></div></body></html>`);
   await lp.locator('#l').screenshot({ path: out, omitBackground: true });
 };
-await lockup('lockup/mintwork-lockup-light.png', false);
-await lockup('lockup/mintwork-lockup-dark.png', true);
+await lockup('lockup/mintwork-lockup-light.png', false, false);
+await lockup('lockup/mintwork-lockup-dark.png', true, false);
+await lockup('lockup/mintwork-lockup-leafdot-light.png', false, true);
+await lockup('lockup/mintwork-lockup-leafdot-dark.png', true, true);
 await b.close();
 execFileSync('/opt/homebrew/bin/ffmpeg', ['-loglevel', 'error', '-y', '-i', 'favicon/favicon-48.png', '-i', 'favicon/favicon-32.png', '-i', 'favicon/favicon-16.png', '-map', '0', '-map', '1', '-map', '2', 'favicon/favicon.ico']);
