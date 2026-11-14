@@ -5,20 +5,29 @@
   </picture>
 </p>
 
-**Developer tools in mint condition.** Small, focused, open-source tools that each do one job well — local-first, and honest about what they measure.
+### Developer tools you're glad you installed.
 
-```bash
-npx @mintwork/honest-tests audit .     # find tests that can't fail
-npx @mintwork/wcag-audit-skill scan .  # audit your UI against WCAG 2.2
-npx @mintwork/agent-ready              # score your repo for coding agents
-npx @mintwork/tokenscope               # find the tokens your AI agent wasted
-```
+Each one solves a real problem, runs where you work, and stays out of your way.
 
-| Tool | What it does |
-|:--|:--|
-| [**honest&#8209;tests**](https://github.com/mintwork/honest-tests) | Finds tests that can't fail, and proves it by mutating your code. Agent skill + CLI for JS/TS. |
-| [**wcag&#8209;audit&#8209;skill**](https://github.com/mintwork/wcag-audit-skill) | Accessibility audits in phases: source scan, real-browser scan, verified findings, SARIF. |
-| [**agent&#8209;ready**](https://github.com/mintwork/agent-ready) | Scores how well coding agents can work in your repo (0–100), and fixes the gaps. |
-| [**tokenscope**](https://github.com/mintwork/tokenscope) | Shows where your AI coding agent wasted tokens and money, with a fix for each finding. |
+[![npm](https://img.shields.io/badge/npm-@mintwork-cb3837?logo=npm&logoColor=white)](https://www.npmjs.com/org/mintwork) [![Repositories](https://img.shields.io/badge/GitHub-repositories-24292f?logo=github&logoColor=white)](https://github.com/orgs/mintwork/repositories) [![Open source](https://img.shields.io/badge/open%20source-MIT-7EE2B8?labelColor=0D1714)](https://github.com/orgs/mintwork/repositories) [![npm provenance](https://img.shields.io/badge/npm-provenance-7EE2B8?labelColor=0D1714&logo=sigstore&logoColor=white)](https://docs.npmjs.com/generating-provenance-statements) [![PRs welcome](https://img.shields.io/badge/PRs-welcome-7EE2B8?labelColor=0D1714)](https://github.com/orgs/mintwork/repositories)
 
-<sub>Every package is published from GitHub Actions with <a href="https://docs.npmjs.com/generating-provenance-statements">npm provenance</a>. Issues and pull requests welcome.</sub>
+---
+
+#### How we build
+
+- **One problem, one tool.** Small, focused tools beat sprawling platforms. If it doesn't earn its place in your workflow, it doesn't ship.
+- **Honest output.** Tools tell you what's actually true, estimates are labeled as estimates, and nothing is inflated to look impressive.
+- **Local-first.** Your code and data stay on your machine unless you ask otherwise.
+- **Light footprint.** Few dependencies, fast startup, nothing running in the background.
+- **Verifiable releases.** Every package is built in CI and published with signed provenance, so you can check exactly what you install.
+- **Open by default.** MIT-licensed, developed in public, with issues and pull requests welcome.
+
+#### Get involved
+
+- 📦 **Packages:** [npmjs.com/org/mintwork](https://www.npmjs.com/org/mintwork)
+- 🧭 **Repositories:** [github.com/orgs/mintwork/repositories](https://github.com/orgs/mintwork/repositories)
+- 🐛 **Bugs & ideas:** open an issue on the relevant repository. Pull requests are welcome too.
+- 🔒 **Security:** report privately via the repository's *Security → Report a vulnerability*.
+- 🎨 **Brand assets:** [logo, colors & usage](https://github.com/mintwork/.github/tree/main/brand)
+
+<sub>Made in Germany · mintwork</sub>
