@@ -1,4 +1,7 @@
-# mintwork
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mintwork/.github/main/brand/lockup/mintwork-lockup-dark.png">
+  <img alt="mintwork" src="https://raw.githubusercontent.com/mintwork/.github/main/brand/lockup/mintwork-lockup-light.png" width="420">
+</picture>
 
 **Developer tools in mint condition.** Small, focused tools that each do one job well: open source, local-first, and honest about what they measure.
 
