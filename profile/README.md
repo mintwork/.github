@@ -1,15 +1,15 @@
 <p>
+  <a href="https://mintwork.github.io/">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mintwork/.github/main/brand/lockup/mintwork-lockup-dark.png">
     <img alt="mintwork" src="https://raw.githubusercontent.com/mintwork/.github/main/brand/lockup/mintwork-lockup-light.png" height="56">
   </picture>
+  </a>
 </p>
 
 ### Developer tools you're glad you installed.
 
 Each one solves a real problem, runs where you work, and stays out of your way.
-
-**🌐 [mintwork.github.io](https://mintwork.github.io/)**
 
 [![npm](https://img.shields.io/badge/npm-@mintwork-cb3837?logo=npm&logoColor=white)](https://www.npmjs.com/org/mintwork) [![Repositories](https://img.shields.io/badge/GitHub-repositories-24292f?logo=github&logoColor=white)](https://github.com/orgs/mintwork/repositories) [![Agensi](https://img.shields.io/badge/Agensi-agent%20skills-7EE2B8?labelColor=0D1714)](https://www.agensi.io/creators/mintwork) [![Open source](https://img.shields.io/badge/open%20source-MIT-7EE2B8?labelColor=0D1714)](https://github.com/orgs/mintwork/repositories) [![npm provenance](https://img.shields.io/badge/npm-provenance-7EE2B8?labelColor=0D1714&logo=sigstore&logoColor=white)](https://docs.npmjs.com/generating-provenance-statements) [![PRs welcome](https://img.shields.io/badge/PRs-welcome-7EE2B8?labelColor=0D1714)](https://github.com/orgs/mintwork/repositories)
 
